@@ -1,0 +1,20 @@
+{
+	"name": "periodic-reminders",
+	"title": "Periodic Reminders",
+	"description": "",
+	"author": "Seth Gallucci",
+	"version": "0.0.0",
+	"minimumCoreVersion": "9",
+	"compatibleCoreVersion": "9",
+	"esmodules": [
+		"scripts/periodic-reminders.js"
+	],
+	"systems": ["dnd5e"],
+	"socket": true,
+	"dependencies": [],
+    "url": "https://github.com/SethGallucci/Periodic-Reminders",
+    "manifest": "",
+    "download": "",
+    "readme": ""
+}
+

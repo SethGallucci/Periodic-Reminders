@@ -1,0 +1,48 @@
+<form class="flexcol">
+    
+    <style>
+        .periodic-reminders-button-row{
+            flex: 0 0 35px;
+        }
+
+        .periodic-reminders-row{
+            margin: 4px;
+        }
+
+        .periodic-reminders-row *{
+            height: 26px;
+            border: 0px 0px;
+            margin: 1px 1px 1px 1px;
+            padding: 0px 0px 0px 0px;
+            resize: none;
+        }
+
+        .periodic-reminders-period-input{
+            flex: 0 0 65px;
+        }
+
+        .periodic-reminders-delete-button{
+            flex: 0 0 35px;
+        }
+    </style>
+
+    <div class="flexrow periodic-reminders-button-row">
+        <button type="button" name="add"><i class="fas fa-plus"></i> Add</button>
+        <button type="button" name="revert"><i class="fas fa-undo"></i> Revert Changes</button>
+    </div>
+
+    {{#each reminders as |reminder reminderIndex|}}
+        <div class="flexrow periodic-reminders-row" data-reminder-index={{reminderIndex}}>
+            <textarea rows="5" name="text" placeholder="Notification text...">{{text}}</textarea>
+            <input class="periodic-reminders-period-input" type="number" name="period" min=1 placeholder="Seconds" value={{period}}>
+            <button class="periodic-reminders-delete-button" type="button" name="delete"><i class="fas fa-trash"></i></button>
+        </div>
+    {{/each}}
+    
+    <footer class="flexrow periodic-reminders-button-row">
+		<button type="submit" name="submit">
+			<i class="fas fa-save"></i> Submit
+		</button>
+	</footer>
+    
+</form>
