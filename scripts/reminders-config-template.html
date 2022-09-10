@@ -33,6 +33,7 @@
 
     {{#each reminders as |reminder reminderIndex|}}
         <div class="flexrow periodic-reminders-row" data-reminder-index={{reminderIndex}}>
+            <input type="checkbox" name="isActive"{{#if isActive}} checked{{/if}}>
             <textarea rows="5" name="text" placeholder="Notification text...">{{text}}</textarea>
             <input class="periodic-reminders-period-input" type="number" name="period" min=1 placeholder="Seconds" value={{period}}>
             <button class="periodic-reminders-delete-button" type="button" name="delete"><i class="fas fa-trash"></i></button>

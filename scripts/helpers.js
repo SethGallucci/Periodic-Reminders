@@ -7,6 +7,11 @@ export async function updateReminderIntervals(){
 	let intervals = {};
 
 	for(let reminder of game.settings.get("periodic-reminders", "reminders")){
+		
+		if( !reminder.isActive ){
+			continue;
+		}
+
 		if( intervals.hasOwnProperty(reminder.period) ){
 			intervals[reminder.period].push(reminder.text);
 		}

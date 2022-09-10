@@ -1,4 +1,4 @@
-export class TimersConfig extends FormApplication{
+export class RemindersConfig extends FormApplication{
     
     constructor(){
         super();
@@ -7,8 +7,8 @@ export class TimersConfig extends FormApplication{
 
     static get defaultOptions(){
         return foundry.utils.mergeObject(super.defaultOptions, {
-            title: "TITLE FROM DEFAULT OPTIONS",
-            template: "./modules/periodic-reminders/scripts/timers-config-template.html",
+            title: "Reminders Config",
+            template: "./modules/periodic-reminders/scripts/reminders-config-template.html",
             width: 600,
             height: "auto",
             resizable: false
@@ -34,6 +34,7 @@ export class TimersConfig extends FormApplication{
         html.find("button[name='add']").click(() => {
             this._reminders = this._getCurrentFormData();
             this._reminders.push({
+                isActive: true,
                 text: "",
                 period: 300
             });
@@ -53,8 +54,9 @@ export class TimersConfig extends FormApplication{
         const formRows = [];
         this.element.find(".periodic-reminders-row").each(function(index){
             formRows[index] = {
+                isActive: $(this).find("input[type='checkbox']").is(":checked"),
                 text: $(this).find("textarea").val(),
-                period: Number($(this).find("input").val())
+                period: Number($(this).find("input[type='number']").val())
             };
         });
         return formRows;

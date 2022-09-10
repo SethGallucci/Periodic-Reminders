@@ -1,4 +1,4 @@
-import { TimersConfig } from "./timers-config.js";
+import { RemindersConfig } from "./reminders-config.js";
 import { updateReminderIntervals } from "./helpers.js";
 
 
@@ -23,12 +23,12 @@ export const PeriodicRemindersSettings = function () {
 		type: Array
 	});
 	
-	game.settings.registerMenu("periodic-reminders", "timersConfig", {
+	game.settings.registerMenu("periodic-reminders", "remindersConfig", {
 	    name: "Timers Config",
 	    label: "Confgure Reminders",
 	    hint: "Config menu for setting reminders.",
 	    icon: "fa-solid fa-bell",
-	    type: TimersConfig,
+	    type: RemindersConfig,
 	    restricted: false
 	});
 
