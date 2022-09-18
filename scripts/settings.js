@@ -1,17 +1,17 @@
 import { RemindersConfig } from "./reminders-config.js";
-import { updateReminderIntervals } from "./helpers.js";
+import { updateRemindersTriggers } from "./helpers.js";
 
 
 export const PeriodicRemindersSettings = function () {
 
     game.settings.register("periodic-reminders", "reminders", {
 		name: "Test Setting Object",
-		hint: "An array of objects each containing the reminder's text and period of how many seconds it takes for the user to be reminded of the specific reminder.",
+		hint: "An array of objects that each contains the necessary data of the reminder it represents.",
 		scope: "client",
 		config: false,
 		default: [],
 		type: Array,
-		onChange: updateReminderIntervals
+		onChange: updateRemindersTriggers
 	});
 
     game.settings.register("periodic-reminders", "intervalIds", {

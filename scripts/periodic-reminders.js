@@ -1,5 +1,5 @@
 import { PeriodicRemindersSettings } from "./settings.js";
-import { updateReminderIntervals } from "./helpers.js";
+import { turnRemindersHook, registerHandlebarsHelpers, updateRemindersTriggers } from "./helpers.js";
 
 
 Hooks.on("init", () => {
@@ -7,6 +7,14 @@ Hooks.on("init", () => {
 });
 
 
+Hooks.on("ready", () => {
+	registerHandlebarsHelpers();
+});
+
+
 Hooks.on("setup", async () => {
-	await updateReminderIntervals();
+	await game.settings.set("periodic-reminders", "intervalIds", []);
+	await updateRemindersTriggers();
+
+	turnRemindersHook();
 });

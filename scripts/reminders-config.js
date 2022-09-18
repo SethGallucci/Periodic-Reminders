@@ -36,7 +36,8 @@ export class RemindersConfig extends FormApplication{
             this._reminders.push({
                 isActive: true,
                 text: "",
-                period: 300
+                timing: null,
+                type: "timer"
             });
             this.render(true);
         });
@@ -52,13 +53,15 @@ export class RemindersConfig extends FormApplication{
 
     _getCurrentFormData(){
         const formRows = [];
-        this.element.find(".periodic-reminders-row").each(function(index){
+        this.element.find(".periodic-reminders-reminder-row").each(function(index){
             formRows[index] = {
                 isActive: $(this).find("input[type='checkbox']").is(":checked"),
                 text: $(this).find("textarea").val(),
-                period: Number($(this).find("input[type='number']").val())
+                timing: Number($(this).find("input[type='number']").val()),
+                type: $(this).find("select option:selected").val()
             };
         });
+        
         return formRows;
     }
 
