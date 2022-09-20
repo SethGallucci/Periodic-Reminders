@@ -4,14 +4,14 @@ function clamp(value, min, max){
 
 
 function modEquivalent(a, b, m){
-	return a-m*Math.floor(a/m) === b-m*Math.floor(b/m);
+	return (a-b)-m*Math.floor((a-b)/m) === 0;
 }
 
 
 export function registerHandlebarsHelpers(){
 	Handlebars.registerHelper({
 		"periodicReminders_reminderParametersColumn":
-			function(reminder){ return `
+			(reminder) => { return `
 				<input type="number" name="timing"${reminder.type === "timer" ? " min=1" : ""} value=${reminder.timing}>
 				<select name="reminder-type">
 					<option${reminder.type === "timer" ? " selected": ""} value="timer">Timer</option>
@@ -21,6 +21,7 @@ export function registerHandlebarsHelpers(){
 	})
 }
 
+
 export function turnRemindersHook(){
 	Hooks.on("updateCombat", (combat, update, options, updaterUserId) => {
 
@@ -28,7 +29,15 @@ export function turnRemindersHook(){
 		// the combat hasn't yet been started
 		// the update is the result of adding a new combatant
 		// the update is the result of marking defeated the combatant of the current turn
-		if( !combat.started || update.hasOwnProperty("initiative") || (update?.defeated && update?._id === combat.combatant.id) ){
+		// the combat has been retreated to a previous turn (previous round or same round but prior turn)
+		let initialEarlyExit = [
+			!combat.started,
+			update.hasOwnProperty("initiative"),
+			update?.defeated && update?._id === combat.combatant.id,
+			combat.current.round < combat.previous.round || (combat.current.round === combat.previous.round && combat.current.turn < combat.previous.turn)
+		].some(Boolean);
+
+		if( initialEarlyExit ){
 			return;
 		}
 
@@ -66,6 +75,7 @@ export function turnRemindersHook(){
 
 	});
 }
+
 
 export async function updateRemindersTriggers(){
 

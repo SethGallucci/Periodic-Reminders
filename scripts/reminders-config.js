@@ -24,31 +24,35 @@ export class RemindersConfig extends FormApplication{
     activateListeners(html){
         super.activateListeners(html);
 
-        for( let button of html.find("button[name='revert']")){
-            button.onclick = () => {
-                this._reminders = duplicate(game.settings.get("periodic-reminders", "reminders"));
-                this.render(true);
-            };
-        }
+        html.find("button[name='revert']").click(() => {
+            this._reminders = duplicate(game.settings.get("periodic-reminders", "reminders"));
+            this.render(true);
+        });
 
         html.find("button[name='add']").click(() => {
             this._reminders = this._getCurrentFormData();
             this._reminders.push({
                 isActive: true,
                 text: "",
-                timing: null,
+                timing: 0,
                 type: "timer"
             });
             this.render(true);
         });
 
-        for( let button of html.find("button[name='delete']")){
+        for( let button of html.find("button[name='delete']") ){
             button.onclick = () => {
                 this._reminders = this._getCurrentFormData();
                 this._reminders.splice(Number($(button).parent().attr("data-reminder-index")), 1);
                 this.render(true);
             };
         }
+
+        html.find("select").change(() => {
+            this._reminders = this._getCurrentFormData();
+            this.render(true);
+        });
+
     }
 
     _getCurrentFormData(){
