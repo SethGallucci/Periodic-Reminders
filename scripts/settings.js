@@ -1,35 +1,26 @@
 import { RemindersConfig } from "./reminders-config.js";
-import { updateRemindersTriggers } from "./helpers.js";
+import { timerReminders } from "./hooks.js"
 
 
-export const PeriodicRemindersSettings = function () {
+export function periodicRemindersSettings() {
 
-    game.settings.register("periodic-reminders", "reminders", {
-		name: "Test Setting Object",
-		hint: "An array of objects that each contains the necessary data of the reminder it represents.",
+	game.settings.register("periodic-reminders", "reminders", {
+		name: "Reminders",
+		hint: "An array of objects which each contains the data of a reminder.",
 		scope: "client",
 		config: false,
 		default: [],
 		type: Array,
-		onChange: updateRemindersTriggers
+		onChange: timerReminders
 	});
 
-    game.settings.register("periodic-reminders", "intervalIds", {
-		name: "Reminder Interval Ids",
-		hint: "An array of ids of the Intervals set to trigger reminders.",
-		scope: "client",
-		config: false,
-		default: [],
-		type: Array
-	});
-	
 	game.settings.registerMenu("periodic-reminders", "remindersConfig", {
-	    name: "Timers Config",
-	    label: "Confgure Reminders",
-	    hint: "Config menu for setting reminders.",
-	    icon: "fa-solid fa-bell",
-	    type: RemindersConfig,
-	    restricted: false
+		name: "Timers Config",
+		label: "Confgure Reminders",
+		hint: "Menu for configuring reminders.",
+		icon: "fa-solid fa-bell",
+		type: RemindersConfig,
+		restricted: false
 	});
 
 }
