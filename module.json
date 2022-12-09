@@ -1,22 +1,36 @@
 {
-	"name": "periodic-reminders",
-	"title": "Periodic Reminders",
-	"description": "A simple tool to help users remember important things.",
-	"author": "Seth Gallucci",
-	"version": "1.0.0",
-	"minimumCoreVersion": "9.269",
-	"compatibleCoreVersion": "9",
-	"esmodules": [
-		"scripts/periodic-reminders.js"
-	],
-	"styles": [
-		"css/reminders-config.css"
-	],
-	"systems": ["dnd5e"],
-	"socket": true,
-	"dependencies": [],
-	"url": "https://github.com/SethGallucci/Periodic-Reminders",
-	"manifest": "https://github.com/SethGallucci/Periodic-Reminders/releases/latest/download/module.json",
-	"download": "https://github.com/SethGallucci/Periodic-Reminders/releases/download/1.0.0/module.zip",
-	"readme": "https://github.com/SethGallucci/Periodic-Reminders/blob/main/module.json"
+  "title": "Periodic Reminders",
+  "id": "periodic-reminders",
+  "description": "A simple tool to help users remember important things.",
+  "version": "1.0.0",
+  "esmodules": [
+    "scripts/periodic-reminders.js"
+  ],
+  "styles": [
+    "css/reminders-config.css"
+  ],
+  "authors": [
+    {
+      "name": "Seth Gallucci",
+      "url": "https://github.com/SethGallucci",
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "compatibility": {
+    "minimum": "9.269",
+    "verified": "9"
+  },
+  "url": "https://github.com/SethGallucci/Periodic-Reminders",
+  "manifest": "https://github.com/SethGallucci/Periodic-Reminders/releases/latest/download/module.json",
+  "download": "https://github.com/SethGallucci/Periodic-Reminders/releases/download/1.0.0/module.zip",
+  "readme": "https://github.com/SethGallucci/Periodic-Reminders/blob/main/module.json"
 }
