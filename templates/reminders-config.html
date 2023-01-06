@@ -38,7 +38,7 @@
                                 {{#if (eq trigger.type "timer")}}
                                     <div class="trigger-config">
                                         <label>Period<i class="fas fa-question-circle" title="The time in minutes it takes for the reminder to trigger."></i></label>
-                                        <input type="number" name="triggerPeriod" value="{{trigger.period}}" placeholder="Period" min="0.25" required>
+                                        <input type="number" name="triggerPeriod" value="{{trigger.period}}" placeholder="Period" min="0.25" step="0.01" required>
                                     </div>
                                     {{/if}}
                                 {{#if (eq trigger.type "turn")}}

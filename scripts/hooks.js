@@ -5,10 +5,6 @@ import { RemindersConfig } from "./reminders-config.js"
 
 export function activateHooks() {
 
-    Hooks.on("init", async () => {
-        game.tours.register("periodic-reminders", "reminders-config", await CanvasTour.fromJSON("./modules/periodic-reminders/tours/tool-location.json"));
-    });
-
     Hooks.on("ready", async () => {
 
         // Make sure the flag is defined.
@@ -66,7 +62,7 @@ function loginReminders() {
         )
         .forEach(r =>
             Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                .forEach(appLink => RemindersConfig._renderAppLink(appLink))
+                .forEach(a => RemindersConfig._renderAppLink(a))
         );
 }
 
@@ -82,7 +78,7 @@ async function timerReminders() {
                 .forEach(t => {
                     t.intervalId = setInterval(
                         () => Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                            .forEach(appLink => RemindersConfig._renderAppLink(appLink)),
+                            .forEach(a => RemindersConfig._renderAppLink(a)),
                         60 * 1000 * t.period
                     );
                 });
