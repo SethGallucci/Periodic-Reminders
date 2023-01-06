@@ -1,22 +1,21 @@
-import { getAppLinkEntity } from "./utils.js";
-
-
 export function registerHandlebarsHelpers() {
+
 	Handlebars.registerHelper({
 		"periodicReminders_appLink":
-			(appLink, index) => {
-				let appLinkEntity = getAppLinkEntity(appLink);
+			(appLink) => {
+
+				const { img, thumb, name } = fromUuidSync(appLink.uuid);
 				return `
-					<li class="reminder-row app-link" appLinkId=${appLink._id}>
-						<div class="item-image image"${appLinkEntity.data.img ? ` style="background-image: url('${appLinkEntity.data.img}')"` : ``}></div>
-						<a class="flexrow title-container" name="appLinkTitleContainer">
-							<span>${appLinkEntity.name}</span>
+					<li class="app-link" appLinkId="${appLink.id}">
+						<div class="image" ${img ?? thumb ? ` style="background-image: url('${img ?? thumb}')"` : ``}></div>
+						<a name="appLinkTitleContainer">
+							<div class="name">${name}</div>
 						</a>
-						<a class="flexrow icon-container" name="unlink" title="Unlink ${appLinkEntity.name}">
+						<a name="unlinkAppLink" title="Unlink ${name}">
 							<i class="fas fa-unlink"></i>
 						</a>
 					</li>
 				`;
 			}
-	})
+	});
 }

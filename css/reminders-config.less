@@ -1,0 +1,200 @@
+@reminder-divider-color: var(--color-border-dark-5);
+@title-text-color: var(--color-text-dark-primary);
+@icon-color: var(--color-text-dark-6);
+@trigger-link-divider-color: var(--color-border-light-secondary);
+@trigger-link-header-text-color: var(--color-text-dark-inactive);
+@trigger-link-header-border-color: var(--color-border-light-highlight);
+
+.flexcol() {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.flexrow() {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.row() {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 8px;
+
+    >* {
+        height: 30px;
+        display: flex;
+        align-items: center;
+    }
+
+    >a {
+        min-width: 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+
+.periodic-reminders-config {
+    overflow-y: hidden;
+
+    >.reminders-container {
+        .flexcol();
+        row-gap: 0px;
+        padding: 0px;
+        margin: 0px;
+        list-style-type: none;
+        height: 100%;
+        overflow-y: auto;
+
+        ::placeholder {
+            opacity: 0.5;
+        }
+
+        >.reminder {
+            &:not(:first-child) {
+                padding-top: 4px;
+                border-top: 2px solid @reminder-divider-color;
+            }
+
+            &:not(:last-child) {
+                padding-bottom: 4px;
+                border-bottom: 2px solid @reminder-divider-color;
+            }
+
+
+            &.deactivated {
+                opacity: 0.4;
+            }
+
+            i {
+                color: @icon-color;
+            }
+
+            >.head {
+                .row();
+                margin: 0px 7px 0px 0px;
+
+                >.title {
+                    flex: 1;
+
+                    >input {
+                        color: @title-text-color;
+                        font-family: "Modesto Condensed", "Palatino Linotype", serif;
+                        font-size: 24px;
+                    }
+
+                    &.expanded {
+                        >input:not(:hover) {
+                            border: 1px solid transparent;
+                            background: none;
+                        }
+                    }
+                }
+            }
+
+            >.body {
+                .flexcol();
+
+                //containter for triggers or app links
+                >ol {
+                    .flexcol();
+                    padding: 0px;
+                    row-gap: 1px;
+                    list-style-type: none;
+
+                    //triggers or app links (including list header)
+                    >li {
+                        .row();
+
+                        >select {
+                            flex: 0 0 110px;
+                        }
+
+                        &:not(.header) {
+                            border-bottom: 1px solid @trigger-link-divider-color;
+                            margin: 0px 7px;
+                        }
+
+                        &.header {
+                            flex: 0 0 28px;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            margin: 2px 0px;
+                            padding: 0px 5px 0px 5px;
+                            background: rgba(0, 0, 0, 0.05);
+                            color: @trigger-link-header-text-color;
+                            border: 2px groove @trigger-link-header-border-color;
+                            font-weight: bold;
+                            font-family: "Modesto Condensed", "Palatino Linotype", serif;
+                            font-size: 16px;
+                        }
+
+                        &.trigger {
+                            >.trigger-config {
+                                flex: 1;
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: flex-end;
+                                flex-wrap: nowrap;
+                                column-gap: 4px;
+
+                                >input {
+                                    flex: 0 0 7ch;
+                                    text-align: right;
+                                }
+
+                                >label {
+                                    white-space: nowrap;
+                                    flex: 1;
+                                    display: flex;
+                                    flex-direction: row;
+                                    justify-content: flex-end;
+                                    flex-wrap: nowrap;
+                                    column-gap: 4px;
+                                }
+                            }
+                        }
+
+                        &.app-link {
+                            >.image {
+                                flex: 0 0 30px;
+                                background-size: cover;
+                            }
+
+                            >[name=appLinkTitleContainer] {
+                                flex: 1;
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: flex-start;
+                                flex-wrap: nowrap;
+                            }
+                        }
+                    }
+                }
+            }
+
+            >.hidden {
+                display: none;
+            }
+        }
+    }
+
+    >footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        position: sticky;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        margin-top: 8px;
+    }
+}

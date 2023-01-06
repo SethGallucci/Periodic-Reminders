@@ -1,63 +1,66 @@
 <form class="periodic-reminders-config">
 
-    <ol class="flexcol reminder-list">
+    <ol class="reminders-container">
         {{#each reminders as |reminder reminderIndex|}}
             <li class="reminder{{#unless reminder.isActive}} deactivated{{/unless}}" reminderId={{reminder.id}}>
-                <div class="reminder-row">
-                    <a class="flexrow" name="expand" title="{{#with (lookup @root.formAppStateRecord [reminder].id)}}{{#if hasFormSettingsHidden}}Expand{{else}}Collapse{{/if}}{{/with}} {{reminder.title}}">
-                        <i class="fas {{#with (lookup @root.formAppStateRecord [reminder].id)}}{{#if hasFormSettingsHidden}}fa-caret-right{{else}}fa-caret-down{{/if}}{{/with}}"></i>
+                <div class="head">
+                    <a name="expandReminder" title="{{#if (lookup (lookup @root.formAppStateRecord reminder.id) "hasFormSettingsHidden")}}Expand{{else}}Collapse{{/if}} {{reminder.title}}">
+                        <i class="fas {{#if (lookup (lookup @root.formAppStateRecord reminder.id) "hasFormSettingsHidden")}}fa-caret-right{{else}}fa-caret-down{{/if}}"></i>
                     </a>
-                    <div class="flex1 title-container {{#with (lookup @root.formAppStateRecord [reminder].id)}}{{#if hasFormSettingsHidden}}expanded{{/if}}{{/with}}">
-                        <input type="text" name="title" placeholder="Title" value="{{reminder.title}}">
+                    <div class="title{{#if (lookup (lookup @root.formAppStateRecord reminder.id) "hasFormSettingsHidden")}} expanded{{/if}}">
+                        <input type="text" name="reminderTitle" placeholder="Title" value="{{reminder.title}}">
                     </div>
-                    <a class="flexrow" name="test" title="Test {{reminder.title}}">
+                    <a name="testReminder" title="Test {{reminder.title}}">
                         <i class="fas fa-bell"></i>
                     </a>
-                    <a class="flexrow" name="toggle" title="Switch {{#if reminder.isActive}}Off{{else}}On{{/if}} {{reminder.title}}">
+                    <a name="toggleReminder" title="Switch {{#if reminder.isActive}}Off{{else}}On{{/if}} {{reminder.title}}">
                         <i class="fas fa-power-off"></i>
                     </a>
-                    <a class="flexrow" name="delete" title="Delete {{reminder.title}}">
+                    <a name="deleteReminder" title="Delete {{reminder.title}}">
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>
-                <div name="hideable-settings" class="{{#with (lookup @root.formAppStateRecord [reminder].id)}}{{#if hasFormSettingsHidden}}hidden-settings{{/if}}{{/with}}">
-                    <div class="form-group reminder-row">
-                        <label>Type</label>
-                        <div class="form-fields">
-                            <select class="setting-configurator" name="type" required>
-                                <option value="TimerReminder" {{#if (eq reminder.type "TimerReminder" )}}selected{{/if}}>Timer</option>
-                                <option value="TurnReminder" {{#if (eq reminder.type "TurnReminder" )}}selected{{/if}}>Turn</option>
-                                <option value="RoundReminder" {{#if (eq reminder.type "RoundReminder" )}}selected{{/if}}>Round</option>
-                                <option value="LoginReminder" {{#if (eq reminder.type "LoginReminder" )}}selected{{/if}}>Login</option>
-                            </select>
-                        </div>
-                    </div>
-                    {{#if (eq reminder.type "TimerReminder")}}
-                        <div class="form-group reminder-row">
-                            <label>Period <i class="fas fa-question-circle" title="The time in seconds it takes for the reminder to trigger."></i></label>
-                            <input class="setting-configurator" type="number" name="timing.period" value="{{reminder.timing.period}}" min="10" required>
-                        </div>
-                    {{/if}}
-                    {{#if (eq reminder.type "TurnReminder")}}
-                        <div class="form-group reminder-row">
-                            <label>Turns <i class="fas fa-question-circle" title="The maximum number of turns after your character's turn that this reminder should trigger. Negative values will cause this reminder to trigger a number of turns before the turn of your character."></i></label>
-                            <input class="setting-configurator" type="text" name="timing.turns" value="{{reminder.timing.turns}}" step="1" pattern="[\+\-]?\d+" required>
-                        </div>
-                        <div class="form-group reminder-row">
-                            <label>Trigger on Combat Start</label>
-                            <input type="checkbox" name="timing.onCombatStart" {{#if reminder.timing.onCombatStart}} checked{{/if}}>
-                        </div>
-                    {{/if}}
-                    <ol class="flexcol app-link-list">
-                        <li class="app-link-list-header">
-                            <span class="flex1">
-                                Application Links
-                            </span>
-                            {{#if (gt appLinks.length 0)}}
-                                <a class="flexrow" name="arrange" title="Arrange Application Link Sheets">
-                                    <i class="fas fa-crop-alt fa-fw"></i>
+                <div name="hideable-settings" class="body{{#if (lookup (lookup @root.formAppStateRecord reminder.id) "hasFormSettingsHidden")}} hidden{{/if}}">
+                    <ol>
+                        <li class="header">
+                            <div>
+                                Triggers
+                            </div>
+                            <a name="addTrigger" title="Add Trigger">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </li>
+                        {{#each triggers as |trigger triggerIndex|}}
+                            <li class="trigger" triggerId="{{trigger.id}}">
+                                <select name="triggerType" required>
+                                    {{selectOptions @root.triggerSelect selected=trigger.type}}
+                                </select>
+                                {{#if (eq trigger.type "timer")}}
+                                    <div class="trigger-config">
+                                        <label>Period<i class="fas fa-question-circle" title="The time in minutes it takes for the reminder to trigger."></i></label>
+                                        <input type="number" name="triggerPeriod" value="{{trigger.period}}" placeholder="Period" min="0.25" required>
+                                    </div>
+                                    {{/if}}
+                                {{#if (eq trigger.type "turn")}}
+                                    <div class="trigger-config">
+                                        <label>Turns<i class="fas fa-question-circle" title="The maximum number of turns after your character's turn that this reminder should trigger. Negative values will cause this reminder to trigger a number of turns before the turn of your character."></i></label>
+                                        <input type="text" name="triggerTurns" value="{{trigger.turns}}" placeholder="Turns" step="1" pattern="[\+\-]?\d+" required>
+                                    </div>
+                                {{/if}}
+                                <a name="removeTrigger" title="Remove Trigger">
+                                    <i class="fas fa-solid fa-xmark"></i>
                                 </a>
-                            {{/if}}
+                            </li>
+                        {{/each}}
+                    </ol>
+                    <ol class="linkdrop">
+                        <li class="header">
+                            <div>
+                                Application Links
+                            </div>
+                            <a name="arrangeAppLinkSheets" title="Arrange Application Link Sheets">
+                                <i class="fas fa-crop-alt fa-fw"></i>
+                            </a>
                         </li>
                         {{#each appLinks as |appLink appLinkIndex|}}
                             {{{periodicReminders_appLink appLink appLinkIndex}}}
@@ -68,9 +71,9 @@
         {{/each}}
     </ol>
 
-    <footer class="flexrow footer-menu">
-        <button type="button" name="add"><i class="fas fa-plus"></i> Add</button>
-        <button type="button" name="revert"><i class="fas fa-undo"></i> Revert Changes</button>
+    <footer class="footer-menu">
+        <button type="button" name="addReminder"><i class="fas fa-plus"></i> Add</button>
+        <button type="button" name="revertChanges"><i class="fas fa-undo"></i> Revert Changes</button>
         <button type="submit" name="submit"><i class="fas fa-save"></i> Submit</button>
     </footer>
 
