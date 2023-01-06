@@ -1,26 +1,31 @@
 # Periodic-Reminders
 
+## Configuration Menu
+The button to open the config menu can be found in the toolbar of the notes layer.
 
-## Reminder Types
+## Trigger Types
 
-#### Timer
-A timer reminder regularly triggers after the number of seconds specified by the user.
-
-#### Turn
-A turn reminder will trigger up to a number of turn before or after, or even on the turn of the user's character, as per the number of turns specified by the user. It can also be made to trigger at the start of combat.
-
-#### Round
-A round reminder triggers on the beginning of a new round in combat.
+#### Combat Start
+Causes a reminder to trigger when the user's character is a combatant in a combat that begins.
 
 #### Login
-A login reminder triggers upon the user logging in.
+Causes a reminder to trigger upon the user logging in.
+
+#### Round
+Causes a reminder to trigger when the user's character is a combatant in a combat that advances to a new round.
+
+#### Timer
+Causes a reminder to trigger in a periodic fashion, with a period specified in minutes, by the user.
+
+#### Turn
+Causes a reminder to trigger a number of turns before or after the user's character's turn; the number of turns being specified by the user, with negative values resulting in the reminder being triggered some number of turns before the character's turn, zero resulting in the reminder being triggered on the character's turn, and positive values resulting in the reminder being triggered some number of turns after the character's turn.
 
 
 ## Application Links
-When a reminder triggers, its linked applications will be rendered at their saved locations, with their saved sizes.
+When a reminder triggers, its linked applications will be rendered. If the user has used the *arrange* feature to position and resize the applications, they will each be rendered with their saved position and size.
 
 #### Adding Application Links
-To add an application to the reminder, simply drag the ui element that opens the application onto the *Application Links* header or list of application links. Various elements such as items, character sheets, journal entries, card piles, roll tables, and macros can be added to a reminder as a valid application link. *Note:* Periodic Reminders does not currently support application links created via compendia. However, after something is imported from a compendium, the new, imported thing can be used to create an application link.
+To add an application to the reminder, simply drag the ui element that opens the application onto the *Application Links* header or list of application links. Various elements such as items, character sheets, journal entries, card piles, roll tables, and macros can be added to a reminder as a valid application link. *Note:* Periodic Reminders does not currently support the creation of application links for embedded compendium content.
 
 #### Removing Application Links
 To remove an application link, click the unlink button on the right side of the application link.
