@@ -82,16 +82,7 @@ export class RemindersConfig extends FormApplication {
     }
 
     static async _renderAppLink(appLink) {
-
-        const options = {
-            focus: true,
-            left: appLink?.position?.left ?? null,
-            top: appLink?.position?.top ?? null,
-            width: appLink?.position?.width ?? 0,
-            height: appLink?.position?.height ?? 0
-        };
-
-        (await RemindersConfig._getAppLinkDocument(appLink)).sheet.render(true, options);
+        (await RemindersConfig._getAppLinkDocument(appLink)).sheet.render(true, mergeObject(appLink.position, {focus: true}));
     }
 
     async _onDrop(event) {
@@ -100,12 +91,16 @@ export class RemindersConfig extends FormApplication {
         let uuid;
         try {
             uuid = JSON.parse(event.dataTransfer.getData("text/plain")).uuid;
+            // Handlebars helpers don't support async functions, and embedded compendium content requires an async
+            // function call to get its necessary render data, so such application links are left unsupported.
             fromUuidSync(uuid);
         }
         catch (error) {
             ui.notifications.error(error);
             return;
         }
+
+        const sheet = (await fromUuid(uuid)).sheet;
 
         const reminder = this._getReminderFromEvent(event);
         const id = randomID();
@@ -115,8 +110,8 @@ export class RemindersConfig extends FormApplication {
             position: {
                 left: null,
                 top: null,
-                width: 0,
-                height: 0
+                width: sheet.position.width,
+                height: sheet.position.height
             }
         };
 
