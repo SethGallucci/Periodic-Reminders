@@ -6,13 +6,13 @@ The button to open the config menu can be found in the toolbar of the notes laye
 ## Trigger Types
 
 #### Combat Start
-Causes a reminder to trigger when the user's character is a combatant in a combat that begins.
+Causes a reminder to trigger when the user's character is a combatant in a combat that begins, or a combat begins and the user is a GM.
 
 #### Login
 Causes a reminder to trigger upon the user logging in.
 
 #### Round
-Causes a reminder to trigger when the user's character is a combatant in a combat that advances to a new round.
+Causes a reminder to trigger when the user's character is a combatant in a combat that advances to a new round, or a combat advances to a new round and the user is a GM.
 
 #### Timer
 Causes a reminder to trigger in a periodic fashion, with a period specified in minutes, by the user.
