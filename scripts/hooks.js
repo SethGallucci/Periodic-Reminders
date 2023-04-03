@@ -91,7 +91,7 @@ async function timerReminders() {
 }
 
 function combatStartReminders(combat) {
-    if (combat.combatants.find(c => c.actor.id === game.user.character.id)) {
+    if (game.user.isGM || combat.combatants.find(c => c.actor.id === game.user?.character?.id)) {
         Object.values(game.user.getFlag("periodic-reminders", "reminders"))
             .filter(r => r.isActive)
             .forEach(r => {
@@ -103,7 +103,7 @@ function combatStartReminders(combat) {
 }
 
 function combatRoundReminders(combat) {
-    if (combat.combatants.find(c => c.actor.id === game.user.character.id)) {
+    if (game.user.isGM || combat.combatants.find(c => c.actor.id === game.user?.character?.id)) {
         Object.values(game.user.getFlag("periodic-reminders", "reminders"))
             .filter(r => r.isActive)
             .forEach(r => {
@@ -116,7 +116,7 @@ function combatRoundReminders(combat) {
 
 function combatTurnReminders(combat) {
 
-    const userCombatants = combat.combatants.filter(c => c.actor.id === game.user.character.id);
+    const userCombatants = combat.combatants.filter(c => c.actor.id === game.user?.character?.id);
 
     if (userCombatants.some(c => !c.defeated)) {
 

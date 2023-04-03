@@ -4,7 +4,7 @@ export function registerHandlebarsHelpers() {
 		"periodicReminders_appLink":
 			(appLink) => {
 
-				const { img, thumb, name } = fromUuidSync(appLink.uuid);
+				const { img, thumb, name } = fromUuidSync(appLink.uuid) ?? { img: "icons/svg/hazard.svg", thumb: "icons/svg/hazard.svg", name: "Broken Link" };
 				return `
 					<li class="app-link" appLinkId="${appLink.id}">
 						<div class="image" ${img ?? thumb ? ` style="background-image: url('${img ?? thumb}')"` : ``}></div>

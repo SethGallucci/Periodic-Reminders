@@ -82,7 +82,7 @@ export class RemindersConfig extends FormApplication {
     }
 
     static async _renderAppLink(appLink) {
-        (await RemindersConfig._getAppLinkDocument(appLink)).sheet.render(true, mergeObject(appLink.position, {focus: true}));
+        (await RemindersConfig._getAppLinkDocument(appLink))?.sheet.render(true, mergeObject(appLink.position, { focus: true }));
     }
 
     async _onDrop(event) {
@@ -258,28 +258,52 @@ export class RemindersConfig extends FormApplication {
         Object.values(reminder.appLinks)
             .forEach(a => RemindersConfig._renderAppLink(a));
 
-        const linkDocPairs = await Promise.all(appLinks.map(async a => Object({
-            appLink: a,
-            document: await RemindersConfig._getAppLinkDocument(a)
-        })));
+        let linkDocPairs = await Promise.all(appLinks
+            .filter(a => Boolean(fromUuidSync(a.uuid)))
+            .map(async a => Object({
+                appLink: a,
+                document: await RemindersConfig._getAppLinkDocument(a)
+            }))
+        );
 
-        await Dialog.prompt({
-            title: "Arrange Applications",
-            content: `<p>Position and resize the applications as you would like them to appear when this reminder triggers and then click save.</p>`,
-            label: "Save",
-            callback: () => {
-                linkDocPairs
-                    .forEach(p => {
-                        p.appLink.position = Object.fromEntries(Object.entries(p.document.sheet.position)
-                            .filter(([key, value]) => ["left", "top", "width", "height"].includes(key))
-                        );
-                    });
+        let shouldSaveArrangement = false;
+
+        await Dialog.wait(
+            {
+                title: "Arrange Applications",
+                content: `<p>Position and resize the applications as you would like them to appear when this reminder triggers and then click save.</p>`,
+                buttons: {
+                    ok: {
+                        icon: `<i class="fas fa-check"></i>`,
+                        label: `Save`,
+                        callback: () => { shouldSaveArrangement = true; }
+                    }
+                },
+                default: "ok",
+                close: html => {
+
+                    if (shouldSaveArrangement) {
+                        linkDocPairs
+                            .filter(p => Boolean(fromUuidSync(p.appLink.uuid)))
+                            .forEach(p => {
+                                p.appLink.position = Object.fromEntries(Object.entries(p.document.sheet.position)
+                                    .filter(([key, value]) => ["left", "top", "width", "height"].includes(key))
+                                );
+                            });
+                    }
+
+                }
             },
-            rejectClose: false,
-            options: { left: 0, top: 0, width: 200 }
-        });
+            {
+                left: 0,
+                top: 0,
+                width: 200
+            }
+        );
 
-        linkDocPairs.forEach(p => p.document.sheet.close());
+        linkDocPairs
+            .filter(p => Boolean(fromUuidSync(p.appLink.uuid)))
+            .forEach(p => p.document.sheet.close());
 
         super.render(false, { focus: true });
     }
