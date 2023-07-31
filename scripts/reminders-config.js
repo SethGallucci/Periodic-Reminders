@@ -45,7 +45,7 @@ export class RemindersConfig extends FormApplication {
         html.find("[name='triggerTurns']").change((event) => this._updateOnTriggerTurnsChange(event));
         html.find("[name='removeTrigger']").click((event) => this._removeTrigger(event));
         html.find("[name='arrangeAppLinkSheets']").click((event) => this._arrangeAppLinkSheets(event));
-        html.find("[name='appLinkTitleContainer']").click((event) => this.renderAppLink(event));
+        html.find("[name='appLinkTitleContainer']").click((event) => this.renderAppLinkFromEvent(event));
         html.find("[name='unlinkAppLink']").click((event) => this._unlinkAppLink(event));
         html.find("[name='addReminder']").click((event) => this._addReminder(event));
         html.find("[name='revertChanges']").click((event) => this._revertChanges(event));
@@ -77,12 +77,8 @@ export class RemindersConfig extends FormApplication {
         return $(event.currentTarget).closest("[triggerId]").attr("triggerId");
     }
 
-    static async _getAppLinkDocument(appLink) {
-        return await fromUuid(appLink.uuid);
-    }
-
-    static async _renderAppLink(appLink) {
-        (await RemindersConfig._getAppLinkDocument(appLink))?.sheet.render(true, mergeObject(appLink.position, { focus: true }));
+    static async renderAppLink(appLink) {
+        (await fromUuid(appLink.uuid))?.sheet.render(true, mergeObject(appLink.position, { focus: true }));
     }
 
     async _onDrop(event) {
@@ -145,7 +141,7 @@ export class RemindersConfig extends FormApplication {
 
         const reminder = this._getReminderFromEvent(event);
         Object.values(reminder.appLinks)
-            .forEach(a => RemindersConfig._renderAppLink(a));
+            .forEach(a => RemindersConfig.renderAppLink(a));
     }
 
     _toggleReminder(event) {
@@ -256,13 +252,13 @@ export class RemindersConfig extends FormApplication {
         const reminder = this._getReminderFromEvent(event);
         const appLinks = Object.values(reminder.appLinks);
         Object.values(reminder.appLinks)
-            .forEach(a => RemindersConfig._renderAppLink(a));
+            .forEach(a => RemindersConfig.renderAppLink(a));
 
         let linkDocPairs = await Promise.all(appLinks
             .filter(a => Boolean(fromUuidSync(a.uuid)))
             .map(async a => Object({
                 appLink: a,
-                document: await RemindersConfig._getAppLinkDocument(a)
+                document: await fromUuid(a.uuid)
             }))
         );
 
@@ -308,12 +304,12 @@ export class RemindersConfig extends FormApplication {
         super.render(false, { focus: true });
     }
 
-    async renderAppLink(event) {
+    async renderAppLinkFromEvent(event) {
         event.preventDefault();
 
         const reminder = this._getReminderFromEvent(event);
         const appLinkId = this._getAppLinkIdFromEvent(event);
-        await RemindersConfig._renderAppLink(reminder.appLinks[appLinkId]);
+        await RemindersConfig.renderAppLink(reminder.appLinks[appLinkId]);
     }
 
     _unlinkAppLink(event) {
@@ -414,7 +410,7 @@ export class RemindersConfig extends FormApplication {
                     .forEach(t => {
                         t.intervalId = setInterval(
                             () => Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                                .forEach(a => RemindersConfig._renderAppLink(a)),
+                                .forEach(a => RemindersConfig.renderAppLink(a)),
                             60 * 1000 * t.period
                         )
                     });
@@ -427,7 +423,7 @@ export class RemindersConfig extends FormApplication {
                     .forEach(t => {
                         t.intervalId = setInterval(
                             () => Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                                .forEach(a => RemindersConfig._renderAppLink(a)),
+                                .forEach(a => RemindersConfig.renderAppLink(a)),
                             60 * 1000 * t.period
                         )
                     });
@@ -443,7 +439,7 @@ export class RemindersConfig extends FormApplication {
                         if (!oldReminders[r.id].triggers[t.id]) {
                             t.intervalId = setInterval(
                                 () => Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                                    .forEach(a => RemindersConfig._renderAppLink(a)),
+                                    .forEach(a => RemindersConfig.renderAppLink(a)),
                                 60 * 1000 * t.period
                             )
                         }
@@ -452,7 +448,7 @@ export class RemindersConfig extends FormApplication {
                         else if (t.period !== oldReminders[r.id].triggers[t.id].period) {
                             t.intervalId = setInterval(
                                 () => Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                                    .forEach(a => RemindersConfig._renderAppLink(a)),
+                                    .forEach(a => RemindersConfig.renderAppLink(a)),
                                 60 * 1000 * t.period
                             )
                         }

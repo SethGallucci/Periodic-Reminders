@@ -2,7 +2,7 @@
   "title": "Periodic Reminders",
   "id": "periodic-reminders",
   "description": "A simple tool to help users remember important things.",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "esmodules": [
     "scripts/periodic-reminders.js"
   ],
@@ -18,10 +18,10 @@
   ],
   "compatibility": {
     "minimum": "10.291",
-    "verified": "10.291"
+    "verified": "11.306"
   },
   "url": "https://github.com/SethGallucci/Periodic-Reminders",
   "manifest": "https://github.com/SethGallucci/Periodic-Reminders/releases/latest/download/module.json",
-  "download": "https://github.com/SethGallucci/Periodic-Reminders/releases/download/2.0.2/module.zip",
+  "download": "https://github.com/SethGallucci/Periodic-Reminders/releases/download/2.0.3/module.zip",
   "readme": "https://github.com/SethGallucci/Periodic-Reminders/blob/main/module.json"
 }

@@ -62,7 +62,7 @@ function loginReminders() {
         )
         .forEach(r =>
             Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                .forEach(a => RemindersConfig._renderAppLink(a))
+                .forEach(a => RemindersConfig.renderAppLink(a))
         );
 }
 
@@ -78,7 +78,7 @@ async function timerReminders() {
                 .forEach(t => {
                     t.intervalId = setInterval(
                         () => Object.values(game.user.getFlag("periodic-reminders", "reminders")[r.id].appLinks)
-                            .forEach(a => RemindersConfig._renderAppLink(a)),
+                            .forEach(a => RemindersConfig.renderAppLink(a)),
                         60 * 1000 * t.period
                     );
                 });
@@ -96,7 +96,7 @@ function combatStartReminders(combat) {
             .filter(r => r.isActive)
             .forEach(r => {
                 if (Object.values(r.triggers).some(t => t.type === "combatStart")) {
-                    Object.values(r.appLinks).forEach(a => RemindersConfig._renderAppLink(a));
+                    Object.values(r.appLinks).forEach(a => RemindersConfig.renderAppLink(a));
                 }
             });
     }
@@ -108,7 +108,7 @@ function combatRoundReminders(combat) {
             .filter(r => r.isActive)
             .forEach(r => {
                 if (Object.values(r.triggers).some(t => t.type === "round")) {
-                    Object.values(r.appLinks).forEach(a => RemindersConfig._renderAppLink(a));
+                    Object.values(r.appLinks).forEach(a => RemindersConfig.renderAppLink(a));
                 }
             });
     }
@@ -139,7 +139,7 @@ function combatTurnReminders(combat) {
                     );
 
                 if (shouldTrigger) {
-                    Object.values(r.appLinks).forEach(a => RemindersConfig._renderAppLink(a));
+                    Object.values(r.appLinks).forEach(a => RemindersConfig.renderAppLink(a));
                 }
             });
     }
