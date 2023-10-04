@@ -81,6 +81,13 @@ export class RemindersConfig extends FormApplication {
         (await fromUuid(appLink.uuid))?.sheet.render(true, mergeObject(appLink.position, { focus: true }));
     }
 
+    _canDragDrop(selector) {
+        return this.options.dragDrop
+            .map(dd => dd?.dropSelector == selector)
+            .some(Boolean)
+        ;
+    }
+
     async _onDrop(event) {
         super._onDrop(event);
 
